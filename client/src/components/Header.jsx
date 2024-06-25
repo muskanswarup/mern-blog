@@ -1,11 +1,18 @@
 
-import React from "react";
-import { Button, Navbar, NavbarToggle, TextInput } from "flowbite-react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Button, Navbar, TextInput } from "flowbite-react";
+import { Link , useLocation} from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
-import { FaMoon } from "react-icons/fa";
+import { FaMoon, FaBars } from "react-icons/fa";
 
 function Header() {
+  const [isOpen, setIsOpen] = useState(false);
+  const path = useLocation().pathname;
+
+  const toggleNavbar = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <Navbar className="border-b-2 p-4">
       <div className="flex justify-between w-full">
@@ -47,38 +54,33 @@ function Header() {
           <Link to="/sign-in" className="text-white">
             <button
               type="button"
-            //   className="bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:outline-none font-medium rounded-lg text-sm px-4 py-2 whitespace-nowrap"
-            className="mt-4 md:mt-0 bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:outline-none font-medium rounded-lg text-sm px-4 py-2 whitespace-nowrap"
+              className="mt-4 md:mt-0 bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:outline-none font-medium rounded-lg text-sm px-4 py-2 whitespace-nowrap"
             >
               Sign In
             </button>
           </Link>
         </div>
-        <Navbar.Toggle/>
-
-
-        <div className="hidden md:block">
-            <ul className="flex flex-row gap-5 ml-2">
-                <Navbar.Link>
-                    <Link to="/">Home</Link>
-                </Navbar.Link>
-
-                <Navbar.Link>
-                    <Link to="/about">About</Link>
-                </Navbar.Link>
-
-                <Navbar.Link>
-                    <Link to="/projects">Projects</Link>
-                </Navbar.Link>
-
-                
-            </ul>
-        </div>
-
-        
+        <button
+          onClick={toggleNavbar}
+          className="text-gray-500 hover:text-gray-700 focus:outline-none md:hidden"
+        >
+          <FaBars />
+        </button>
       </div>
-      
-        
+
+      <div className={`${isOpen ? "block" : "hidden"} md:block`} >
+        <ul className="flex md:flex-row gap-5 ml-2">
+          <Navbar.Link className={path === '/' ? 'text-teal-500' : 'text-black'}  active={path === '/'} as={'div'}>
+            <Link to="/">Home</Link>
+          </Navbar.Link>
+          <Navbar.Link active={path === '/about'} className={path === '/about' ? 'text-teal-500' : 'text-black'} as={'div'}>
+            <Link to="/about">About</Link>
+          </Navbar.Link>
+          <Navbar.Link active={path === '/projects'} className={path === '/projects' ? 'text-teal-500' : 'text-black'} as={'div'}> 
+            <Link to="/projects">Projects</Link>
+          </Navbar.Link>
+        </ul>
+      </div>
     </Navbar>
   );
 }
